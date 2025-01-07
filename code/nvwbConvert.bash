@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# # Function to display usage
-# usage() {
-#     echo "Usage: $0 <git-repo> <project-folder>"
-#     exit 1
-# }
-
-# # Check for correct arguments
-# if [ "$#" -ne 2 ]; then
-#     usage
-# fi
-
-# GIT_REPO="$1"
-# PROJECT_FOLDER="$2"
-
 # Function to display usage
 usage() {
     echo ""
@@ -106,35 +92,6 @@ echo "Overwritten files: ${OVERWRITTEN_FILES[*]}"
 # # Step 2: Edit spec.yaml file on TARGET
 SPEC_FILE="$REPO_NAME/.project/spec.yaml"
 python3 modify_spec.py $SPEC_FILE $REPO_NAME
-# SPEC_FILE_STATUS=""
-# if [ -f "$SPEC_FILE" ]; then
-#     echo "Editing $SPEC_FILE..."
-#     # Update fields in the YAML file using yq
-#     if command -v yq > /dev/null 2>&1; then
-#         yq eval ".meta.name = \"$REPO_NAME\"" -i "$SPEC_FILE"
-#         yq eval ".meta.image = \"project-$REPO_NAME\"" -i "$SPEC_FILE"
-#         SPEC_FILE_STATUS="spec.yaml updated"
-#     else
-#         # Fallback to sed for editing YAML if yq is not installed
-#         if command -v gsed > /dev/null 2>&1; then
-#             SED="gsed"
-#         else
-#             SED="sed"
-#         fi
-
-#         # Update the "name" field under "meta"
-#         $SED -i '' "/^meta:/,/^[^ ]/ s/^\\s*name:.*/  name: $REPO_NAME/" "$SPEC_FILE"
-        
-#         # Update the "image" field under "meta"
-#         $SED -i '' "/^meta:/,/^[^ ]/ s/^\\s*image:.*/  image: project-$REPO_NAME/" "$SPEC_FILE"
-
-#         SPEC_FILE_STATUS="spec.yaml updated"
-#     fi
-# else
-#     echo "Error: spec.yaml not found in .project. Skipping YAML edits."
-#     SPEC_FILE_STATUS="spec.yaml missing"
-# fi
-
 
 # Step 3: Stage and commit changes
 cd "$REPO_NAME" || exit 1
@@ -155,5 +112,7 @@ fi
 git commit -am "$COMMIT_MESSAGE"
 
 # Completion message
-echo "Repository '$REPO_NAME' successfully converted to a baseline functional AI Workbench project."
+echo ""
+echo "Repository '$REPO_NAME' successfully converted to a basic AI Workbench project."
+echo "NOTE: Minor additional tweaks may be necessary to achieve satisfactory status. "
 
