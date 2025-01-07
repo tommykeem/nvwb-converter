@@ -32,7 +32,6 @@ fi
 echo ""
 echo "TARGET Repository: $GIT_REPO"
 echo "TEMPLATE Repository: $TEMPLATE_REPO"
-echo ""
 
 # Extract the name of the git repository (assumes last part of the path is the repo name)
 REPO_NAME=${GIT_REPO##*/}
@@ -88,12 +87,23 @@ done
 # Print the OVERWRITTEN_FILES list for debugging
 echo "Overwritten files: ${OVERWRITTEN_FILES[*]}"
 
-
-# # Step 2: Edit spec.yaml file on TARGET
+# Step 2: Edit spec.yaml file on TARGET
 SPEC_FILE="$REPO_NAME/.project/spec.yaml"
 python3 modify_spec.py $SPEC_FILE $REPO_NAME
 
-# Step 3: Stage and commit changes
+# Step 3: Edit docker-compose.yaml file on TARGET
+search_dir="$REPO_NAME"  # Replace with your desired search directory
+
+find "$search_dir" -name "docker-compose.yaml" -type f | while read -r compose_file; do
+    if [ -f "$compose_file" ]; then
+        echo "Found docker-compose.yaml: $compose_file"
+        python3 modify_compose.py $compose_file
+    else
+        echo "No docker-compose.yaml detected. Skipping"
+    fi
+done
+
+# Step 4: Stage and commit changes
 cd "$REPO_NAME" || exit 1
 git add .
 

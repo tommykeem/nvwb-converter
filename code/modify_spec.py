@@ -73,10 +73,8 @@ def clear_mounts(file_path):
     
     # Update the meta.name entry
     print(f"Updating {file_path} with default mount: {default_mount}")
-    if 'execution:' in data:
-        data['execution:']['mounts'] = default_mount
-    else:
-        data['execution'] = {'mounts': default_mount}
+    if 'execution' in data and 'mounts' in data['execution']:
+        data['execution']['mounts'] = default_mount
     
     # Write the updated YAML back to the file
     with open(file_path, 'w') as file:
@@ -91,9 +89,12 @@ if __name__ == "__main__":
     new_name = sys.argv[2]
     new_project = "project-" + new_name
     
+    print("")
+    print(f"Updating {spec_file}: Initializing...")
     update_name(spec_file, new_name, new_project)
     update_layout(spec_file, new_name)
     clear_secrets(spec_file)
     clear_mounts(spec_file)
     clear_apps(spec_file)
     print(f"Updating {spec_file}: Complete!")
+    print("")
