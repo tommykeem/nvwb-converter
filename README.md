@@ -12,8 +12,7 @@ A bash script to turn an arbitrary git repo into an NVIDIA AI Workbench project.
 - let the script run to completion
 
 ## what it does
-- copies in `.project` folder and contents from Workbench Project to `<git_repo>`
-- copies in environment config files from Workbench Project
+- transfers the environment config files from the template repo to the target repo
   - `.project/configpacks`
   - `.project/spec.yaml`
   - `apt.txt`
@@ -22,11 +21,11 @@ A bash script to turn an arbitrary git repo into an NVIDIA AI Workbench project.
   - `postBuild.bash`
   - `variables.env`
 - notes if it overwrites any files in the target git repo
-- updates `spec.yaml` transferred from the template repo
+- updates the `spec.yaml` transferred from the template repo
   - updates the meta.name and meta.image fields
   - reads the new repo directory structure and updates the layout fields
   - resets mounts, secrets, and user-added applications to defaults
-- finds and updates and `docker-compose.yaml` files transferred from the template repo
+- finds and updates any `docker-compose.yaml` files transferred from the template repo
   - Adds the `NVWB_TRIM_PREFIX` environment variable to all detected services
 - commits changes to the target repo and adds detailed commit message.
 
